@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>title_to_slug</title>
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body>
+    <!-- don't forget that v-model is t-w-b from a form and vue.app -->
+    <div class="tts">
+      <form>
+        <input type="text" v-model="input" />
+        <button @click.prevent="convertToSlug()">Click to convert</button>
+      </form>
+      <div class="out">{{output}}</div>
+    </div>
+    <script src="vue.js"></script>
+
+    <script>
+      var app = new Vue({
+        el: ".tts",
+        data: {
+          input: "",
+          output: "",
+        },
+        methods: {
+          convertToSlug() {
+            let title = this.input.toLowerCase();
+            for (let i = 0; i < title.length; i++) {
+              if (
+                (title[i] === " " && i === 0) ||
+                i === title.length - 1 ||
+                (i === 0 && i === title.length - 1)
+              ) {
+                title = title.slice(0, i) + title.slice(i + 1);
+                i--;
+              }
+            }
+            title = title.replace(/\s+/g, "-");
+            title = title.replace(/&/g, "-and-");
+            title = title.replace(/\|\|/g, "-or-");
+            this.output = title;
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
